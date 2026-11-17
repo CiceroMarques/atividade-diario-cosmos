@@ -1,7 +1,16 @@
 import { useEffect, useState } from "react";
 import { buscarOPOD } from "./api.js";
 
-const dataHoje = new Date().toISOString().slice(0, 10);
+const partesDataHoje = new Intl.DateTimeFormat("en-US", {
+  timeZone: "America/New_York",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+})
+  .formatToParts(new Date())
+  .filter(({ type }) => type !== "literal")
+  .reduce((partes, { type, value }) => ({ ...partes, [type]: value }), {});
+const dataHoje = `${partesDataHoje.year}-${partesDataHoje.month}-${partesDataHoje.day}`;
 const dataMinima = "1995-06-16";
 
 function formatarData(data) {
